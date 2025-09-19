@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.tree import DecisionTreeRegressor, plot_tree
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, mean_absolute_error
 from sklearn.linear_model import LinearRegression, LassoCV, RidgeCV
 from sklearn.preprocessing import OneHotEncoder
 from scipy.stats import randint
@@ -47,7 +47,7 @@ def preprocess_data(df):
                                  df['highway_fuel_economy']) / 2
     df['mileage/year'] = df['mileage'] / df['age']
     df['engine/hp'] = df['engine_displacement'] / df['horsepower']
-    return None
+    return df
     
 
 
@@ -79,7 +79,7 @@ def create_binned_and_encoded_features(df, col_name, bins, labels):
 
     return df_final
 
-preprocess_data(df_small)
+df_small = preprocess_data(df_small)
 
 df_final = create_binned_and_encoded_features(df_small,
                                    'horsepower',
@@ -140,10 +140,13 @@ model_tree = RandomizedSearchCV(
     n_iter=100,
     cv=10,
     random_state=37,
-    scoring = 'r2'
+    scoring = 'r2',
+    n_jobs=-1
 )
 model_tree.fit(x_train,y_train)
 y_pred_tree = model_tree.predict(x_test)
 r2_tree = r2_score(y_test,y_pred_tree)
+mae_tree = mean_absolute_error(np.expm1(y_test), np.expm1(y_pred_tree))
 print("R2 for Decision Tree model:", r2_tree)
 print("Best parameters for Decision Tree model:", model_tree.best_params_)
+print('MAE for Decision Tree model:', mae_tree)
