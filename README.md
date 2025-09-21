@@ -32,7 +32,7 @@ The final model was evaluated on unseen test data to assess its performance. The
     * `min_samples_leaf`: 13
 
 * **Model Performance Metrics:**
-    * **R-squared ($R^2$) Score:** 57%
+    * **R-squared ($R^2$) Score:** 67%
     * **Mean Absolute Error (MAE):** $1380.93
 
 ### Visual Model Evaluation
